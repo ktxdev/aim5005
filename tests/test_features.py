@@ -1,3 +1,5 @@
+from unicodedata import decimal
+
 from aim5005.features import MinMaxScaler, StandardScaler
 import numpy as np
 import unittest
@@ -63,6 +65,15 @@ class TestFeatures(TestCase):
         assert (result == expected).all(), "Scaler transform does not return expected values. Expect {}. Got: {}".format(expected.reshape(1,-1), result.reshape(1,-1))
 
     # TODO: Add a test of your own below this line
+    def test_standard_scaler_fit(self):
+        scaler = StandardScaler()
+        data = [[-1, 2], [-0.5, 6], [0, 10], [1, 18]]
+        expected_mean = np.array([-0.125,  9.   ])
+        expected_std = np.array([0.73950997, 5.91607978])
+        scaler.fit(data)
+        assert (scaler.mean == expected_mean).all(), "scaler fit does not return mean value [-0.125,  9.   ] "
+        assert (scaler.std == expected_std).all(), "scaler fit does not return standard deviation value [0.73950997, 5.91607978] "
+
     
 if __name__ == '__main__':
     unittest.main()

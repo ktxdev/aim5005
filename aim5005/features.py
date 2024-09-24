@@ -42,7 +42,7 @@ class MinMaxScaler:
 class StandardScaler:
     def __init__(self):
         self.mean = None
-        self.variance = None
+        self.std = None
 
     def _check_is_array(self, x:np.ndarray) -> np.ndarray:
         if not isinstance(x, np.ndarray):
@@ -54,11 +54,11 @@ class StandardScaler:
     def fit(self, x:np.ndarray) -> None:
         x = self._check_is_array(x)
         self.mean = np.mean(x, axis=0)
-        self.variance = np.std(x, axis=0)
+        self.std = np.std(x, axis=0)
 
     def transform(self, x:np.ndarray) -> np.ndarray:
         x = self._check_is_array(x)
-        return (x - self.mean) / self.variance
+        return (x - self.mean) / self.std
 
     def fit_transform(self, x:list) -> np.ndarray:
         x = self._check_is_array(x)
