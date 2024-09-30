@@ -71,8 +71,8 @@ class TestFeatures(TestCase):
         expected_mean = np.array([-0.125,  9.   ])
         expected_std = np.array([0.73950997, 5.91607978])
         scaler.fit(data)
-        assert (scaler.mean == expected_mean).all(), "scaler fit does not return mean value [-0.125,  9.   ] "
-        assert (scaler.std == expected_std).all(), "scaler fit does not return standard deviation value [0.73950997, 5.91607978] "
+        assert np.allclose(expected_mean, scaler.mean), "scaler fit does not return mean value [-0.125,  9.   ] "
+        assert np.allclose(expected_std, scaler.std), "scaler fit does not return standard deviation value [0.73950997, 5.91607978] "
 
     
 if __name__ == '__main__':
