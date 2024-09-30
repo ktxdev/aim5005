@@ -1,11 +1,10 @@
-from unicodedata import decimal
-
-import pytest
-
-from aim5005.features import MinMaxScaler, StandardScaler, LabelEncoder
-import numpy as np
 import unittest
 from unittest.case import TestCase
+
+import numpy as np
+
+from aim5005.features import MinMaxScaler, StandardScaler, LabelEncoder
+
 
 ### TO NOT MODIFY EXISTING TESTS
 
