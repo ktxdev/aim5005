@@ -1,6 +1,8 @@
 from unicodedata import decimal
 
-from aim5005.features import MinMaxScaler, StandardScaler
+import pytest
+
+from aim5005.features import MinMaxScaler, StandardScaler, LabelEncoder
 import numpy as np
 import unittest
 from unittest.case import TestCase
@@ -74,6 +76,37 @@ class TestFeatures(TestCase):
         assert np.allclose(expected_mean, scaler.mean), "scaler fit does not return mean value [-0.125,  9.   ] "
         assert np.allclose(expected_std, scaler.std), "scaler fit does not return standard deviation value [0.73950997, 5.91607978] "
 
-    
+    def test_label_encoder_fit(self):
+        encoder = LabelEncoder()
+        labels = np.array(["paris", "paris", "tokyo", "amsterdam"])
+        expected_classes_ = np.array(["paris", "tokyo", "amsterdam"])
+        encoder.fit(labels)
+        assert np.array_equal(encoder.classes_, np.sort(expected_classes_))
+
+    def test_label_encoder_transform(self):
+        encoder = LabelEncoder()
+        labels = np.array(["paris", "paris", "tokyo", "amsterdam"])
+        encoder.fit(labels)
+        expected = np.array([2, 2, 1])
+        result = encoder.transform(np.array(["tokyo", "tokyo", "paris"]))
+        assert np.array_equal(expected, result)
+
+    def test_label_encoder_transform_with_unseen_labels(self):
+        encoder = LabelEncoder()
+        labels = np.array(["paris", "paris", "tokyo", "amsterdam"])
+        encoder.fit(labels)
+
+        with self.assertRaises(ValueError) as context:
+            encoder.transform(np.array(["tokyo", "tokyo", "london"]))
+
+        self.assertEqual(str(context.exception), "Transform called with unseen labels")
+
+    def test_label_encoder_fit_transform(self):
+        encoder = LabelEncoder()
+        labels = np.array(["tokyo", "tokyo", "paris"])
+        expected = np.array([1, 1, 0])
+        result = encoder.fit_transform(labels)
+        assert np.array_equal(expected, result)
+
 if __name__ == '__main__':
     unittest.main()
